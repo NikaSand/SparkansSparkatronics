@@ -18,10 +18,10 @@ public class IMU_test_mecanum extends LinearOpMode {
     @Override
     public void runOpMode() {
         // find the data stuff
-        FLMotor = hardwareMap.get(DcMotor.class, "FLMotor");
-        FRMotor = hardwareMap.get(DcMotor.class, "FRMotor");
-        BLMotor = hardwareMap.get(DcMotor.class, "BLMotor");
-        BRMotor = hardwareMap.get(DcMotor.class, "BRMotor");
+        FLMotor = hardwareMap.get(DcMotor.class, "FLMotor"); //port 0
+        FRMotor = hardwareMap.get(DcMotor.class, "FRMotor"); //port 1
+        BLMotor = hardwareMap.get(DcMotor.class, "BLMotor"); //port 2
+        BRMotor = hardwareMap.get(DcMotor.class, "BRMotor"); //port 3
 
 
         waitForStart();
