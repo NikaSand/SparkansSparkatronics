@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp
 public class MainTeleOp extends LinearOpMode {
     private DcMotor FLMotor;
-    private DcMotor FRMotor; //hiiiiiiiiiii
+    private DcMotor FRMotor;
     private DcMotor BLMotor;
     private DcMotor BRMotor;
 
