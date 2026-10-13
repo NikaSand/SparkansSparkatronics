@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,6 +18,8 @@ public class Auton extends LinearOpMode {
     private DcMotor BRMotor;
     private DcMotor BLMotor;
 
+    IMU imu;
+
     @Override
     public void runOpMode() {
 
@@ -23,8 +27,21 @@ public class Auton extends LinearOpMode {
         FRMotor = hardwareMap.get(DcMotor.class, "FRMotor");
         BLMotor = hardwareMap.get(DcMotor.class, "BLMotor");
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor");
+        imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters myIMUparameters;
+
+        imu.initialize(
+                new IMU.Parameters(
+                        new RevHubOrientationOnRobot(
+                                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+                        )
+                )
+        );
 
         waitForStart();
+        // auton put here peoples
+
         if (opModeIsActive()) {
 
             Translate(0,1,0);
