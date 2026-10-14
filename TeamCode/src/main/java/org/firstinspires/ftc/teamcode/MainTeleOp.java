@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.Range;
@@ -16,25 +17,28 @@ public class MainTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() {
         // find the data stuff
-        FLMotor = hardwareMap.get(DcMotor.class, "FLMotor"); //port 0
-        FRMotor = hardwareMap.get(DcMotor.class, "FRMotor"); //port 1
-        BLMotor = hardwareMap.get(DcMotor.class, "BLMotor"); //port 2
-        BRMotor = hardwareMap.get(DcMotor.class, "BRMotor"); //port 3
+        FLMotor = hardwareMap.get(DcMotor.class, "FLMotor"); //port0
+        FRMotor = hardwareMap.get(DcMotor.class, "FRMotor"); //port1
+        BLMotor = hardwareMap.get(DcMotor.class, "BLMotor"); //port2
+        BRMotor = hardwareMap.get(DcMotor.class, "BRMotor"); //port3
+
+        FLMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        FRMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         waitForStart();
 
         while (opModeIsActive()) {
             // setting the power and the equations for cool wheel things
-            double ForwardBack = -gamepad1.left_stick_y;
-            double LeftRight = gamepad1.left_stick_x;
-            double Rotate = -gamepad1.right_stick_x;
+            double ForwardBack = -gamepad1.left_stick_y; //-
+            double Rotate = gamepad1.left_stick_x;
+            double LeftRight = -gamepad1.right_stick_x; //-
             double SpeedMultiplier = 1.0;
 
-            double FLP = (ForwardBack + LeftRight + Rotate) * SpeedMultiplier;
-            double FRP = -(ForwardBack - LeftRight - Rotate) * SpeedMultiplier;
-            double RLP = (ForwardBack - LeftRight + Rotate) * SpeedMultiplier;
-            double RRP = -(ForwardBack + LeftRight - Rotate) * SpeedMultiplier;
+            double FLP = -(ForwardBack + LeftRight + Rotate) * SpeedMultiplier;
+            double FRP = (ForwardBack - LeftRight - Rotate) * SpeedMultiplier;
+            double RLP = -(ForwardBack - LeftRight + Rotate) * SpeedMultiplier;
+            double RRP = (ForwardBack + LeftRight - Rotate) * SpeedMultiplier;
 
             // Clip power to ensure it stays within -1.0 to 1.0
             FLP = Range.clip(FLP, -1.0, 1.0);

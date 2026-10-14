@@ -3,10 +3,14 @@ package org.firstinspires.ftc.teamcode;
 //IN THIS CODE WE WILL TRY TO INCORPORATE IMU BOTPOSE TO MECANUM DRIVETRAIN
 
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 
 @TeleOp
 public class IMU_test_mecanum extends LinearOpMode {
@@ -15,14 +19,29 @@ public class IMU_test_mecanum extends LinearOpMode {
     private DcMotor BLMotor;
     private DcMotor BRMotor;
 
+    IMU imu;
+
+
+
     @Override
     public void runOpMode() {
         // find the data stuff
+
         FLMotor = hardwareMap.get(DcMotor.class, "FLMotor"); //port 0
         FRMotor = hardwareMap.get(DcMotor.class, "FRMotor"); //port 1
         BLMotor = hardwareMap.get(DcMotor.class, "BLMotor"); //port 2
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor"); //port 3
+        imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters myIMUparameters;
 
+        imu.initialize(
+                new IMU.Parameters(
+                        new RevHubOrientationOnRobot(
+                                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+                        )
+                )
+        );
 
         waitForStart();
 
