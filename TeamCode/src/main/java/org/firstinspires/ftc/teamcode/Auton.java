@@ -63,6 +63,13 @@ public class Auton extends LinearOpMode {
 
     }
 
+    private void setDrivePower(double left, double right) {
+        FLMotor.setPower(left);
+        BLMotor.setPower(left);
+        FRMotor.setPower(right);
+        BRMotor.setPower(right);
+    }
+
     private void Translate(double x, double y, double r)
     {
         double ForwardBack = y;
@@ -118,18 +125,48 @@ public class Auton extends LinearOpMode {
             double max = Math.max(Math.abs(leftPower), Math.abs(rightPower));
             if (max > 1.0) { leftPower /= max; rightPower /= max; }
 
-            FLMotor.setPower(leftPower);
-            FRMotor.setPower(rightPower);
-            BLMotor.setPower(leftPower);
-            BRMotor.setPower(rightPower);
+            setDrivePower(leftPower, rightPower);
 
             telemetry.addData("err", error);
             telemetry.update();
         }
-        FLMotor.setPower(0);
-        FRMotor.setPower(0);
-        BLMotor.setPower(0);
-        BRMotor.setPower(0);
+        setDrivePower(0, 0);
+        sleep(100);
+    }
+
+    public void imuTurnToHeading(double targetHeading, double toleranceDeg, double timeoutSeconds) {
+        double Kp = 0.03; // move laterrr
+        double Ki = 0.0; // move laterrr
+        double Kd = 0.002; // move laterrr
+        ElapsedTime timeoutTimer = new ElapsedTime();
+        ElapsedTime loopTimer = new ElapsedTime();
+        ElapsedTime settleTimer = new ElapsedTime();
+        double integral = 0;
+        double lastError = AngleUnit.normalizeDegrees(
+                targetHeading - imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+
+        while (opModeIsActive() && timeoutTimer.seconds() < timeoutSeconds) {
+            double dt = loopTimer.seconds();
+            loopTimer.reset();
+
+            double currentHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+            double error = AngleUnit.normalizeDegrees(targetHeading - currentHeading);
+
+            // exit once we've stayed inside tolerance for a moment
+            if (Math.abs(error) > toleranceDeg) settleTimer.reset();
+            if (settleTimer.seconds() > 0.2) break;
+
+            integral += error * dt;
+            integral = Range.clip(integral, -10, 10);
+            double derivative = dt > 0 ? (error - lastError) / dt : 0;
+            lastError = error;
+
+            double correction = Kp * error + Ki * integral + Kd * derivative;
+            correction = Range.clip(correction, -0.6, 0.6);
+
+            setDrivePower(-correction, correction);   // speed is 0, so it's just +/- correction
+        }
+        setDrivePower(0, 0);
         sleep(100);
     }
 
