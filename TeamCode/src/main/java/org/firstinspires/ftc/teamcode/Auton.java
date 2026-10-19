@@ -43,6 +43,7 @@ public class Auton extends LinearOpMode {
                         )
                 )
         );
+        imu.resetYaw();
 
         waitForStart();
         // auton put here peoples
@@ -89,22 +90,47 @@ public class Auton extends LinearOpMode {
 
     public void driveLesbian(double speed, double targetHeading, double durationSecond) {
         // usage, call, speed 0-1, targetHeading direction dependent, durationSecond time
-        double Kp = 0.3; // move laterrr
+        double Kp = 0.03; // move laterrr
+        double Ki = 0.0; // move laterrr
+        double Kd = 0.002; // move laterrr
         ElapsedTime runTimer = new ElapsedTime();
+        ElapsedTime loopTimer = new ElapsedTime();
+        double integral = 0;
+        double lastError = 0;
 
         while (opModeIsActive() && runTimer.seconds() < durationSecond) {
+            double dt = loopTimer.seconds();
+            loopTimer.reset();
             double currentHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-            double error = targetHeading - currentHeading;
+            double error = AngleUnit.normalizeDegrees(targetHeading - currentHeading);
 
-            while (error > 180) error -=360;
-            while (error < -180) error +=360;
+            integral += error * dt;
+            integral = Range.clip(integral, -10, 10);
+            double derivative = dt > 0 ? (error - lastError) / dt : 0;
+            lastError = error;
 
-            double correction = error * Kp;
-            correction Range.clip(correction, -0.3, 0.3);
+            double correction = Kp * error + Ki * integral + Kd * derivative;
+            correction = Range.clip(correction, -0.3, 0.3);
 
+            double leftPower = speed - correction;
+            double rightPower = speed + correction;
+
+            double max = Math.max(Math.abs(leftPower), Math.abs(rightPower));
+            if (max > 1.0) { leftPower /= max; rightPower /= max; }
+
+            FLMotor.setPower(leftPower);
+            FRMotor.setPower(rightPower);
+            BLMotor.setPower(leftPower);
+            BRMotor.setPower(rightPower);
+
+            telemetry.addData("err", error);
+            telemetry.update();
         }
-
-
+        FLMotor.setPower(0);
+        FRMotor.setPower(0);
+        BLMotor.setPower(0);
+        BRMotor.setPower(0);
+        sleep(100);
     }
 
 
