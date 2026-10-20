@@ -152,7 +152,6 @@ public class Auton extends LinearOpMode {
             double currentHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
             double error = AngleUnit.normalizeDegrees(targetHeading - currentHeading);
 
-            // exit once we've stayed inside tolerance for a moment
             if (Math.abs(error) > toleranceDeg) settleTimer.reset();
             if (settleTimer.seconds() > 0.2) break;
 
@@ -164,7 +163,7 @@ public class Auton extends LinearOpMode {
             double correction = Kp * error + Ki * integral + Kd * derivative;
             correction = Range.clip(correction, -0.6, 0.6);
 
-            setDrivePower(-correction, correction);   // speed is 0, so it's just +/- correction
+            setDrivePower(-correction, correction);
         }
         setDrivePower(0, 0);
         sleep(100);
