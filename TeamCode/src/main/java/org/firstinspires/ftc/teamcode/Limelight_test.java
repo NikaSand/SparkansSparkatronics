@@ -39,8 +39,11 @@ public class Limelight_test extends OpMode {
         LLResult llResult = limelight.getLatestResult(); //this pulls data from the limelight
         if (llResult != null && llResult.isValid()) {
             Pose3D botPose = llResult.getBotpose();
+            int tagId = fr.getFiducialId(); // Extracts the AprilTag ID number
+            telemetry.addData("AprilTag ID", tagId);
             telemetry.addData("Tx", llResult.getTx());
             telemetry.addData("Ty", llResult.getTy());
+            telemetry.addData("Ta", llResult.getTa());
             //telemetry.addData("Botpose", botpose.toString());
 
         }
