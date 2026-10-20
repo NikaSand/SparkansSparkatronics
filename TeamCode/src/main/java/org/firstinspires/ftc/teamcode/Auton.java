@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.util.Range.clip;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -11,6 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -94,6 +98,26 @@ public class Auton extends LinearOpMode {
         BLMotor.setPower(RLP);
         BRMotor.setPower(RRP);
     }
+
+    public void iafcDrive {
+        double x = gamepad1.left_stick_x;
+        double y = -gamepad1.left_stick_y;
+        double rx = gamepad1.right_stick_x;
+
+        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+
+        double rotX = (x*cos(heading)) + (y*sin(heading));
+        double rotY = (y*cos(heading)) + (x*sin(heading));
+
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+
+        double frontLeftPower = (y + x + rx) / denominator;
+        double backLeftPower = (y - x + rx) / denominator;
+        double frontRightPower = (y - x - rx) / denominator;
+        double backRightPower = (y + x - rx) / denominator;
+    }
+
+
 
     public void driveLesbian(double speed, double targetHeading, double durationSecond) {
         // usage, call, speed 0-1, targetHeading direction dependent, durationSecond time
