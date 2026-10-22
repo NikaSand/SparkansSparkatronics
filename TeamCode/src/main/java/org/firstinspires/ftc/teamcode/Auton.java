@@ -7,6 +7,7 @@ import static java.lang.Math.sin;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -38,6 +39,9 @@ public class Auton extends LinearOpMode {
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor");
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters myIMUparameters;
+
+        FLMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        FRMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         imu.initialize(
                 new IMU.Parameters(
