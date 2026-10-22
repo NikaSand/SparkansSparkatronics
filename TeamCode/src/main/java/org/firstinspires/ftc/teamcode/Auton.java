@@ -27,6 +27,7 @@ public class Auton extends LinearOpMode {
     private DcMotor FLMotor;
     private DcMotor BRMotor;
     private DcMotor BLMotor;
+    private DcMotor ITMotor;
 
     IMU imu;
 
