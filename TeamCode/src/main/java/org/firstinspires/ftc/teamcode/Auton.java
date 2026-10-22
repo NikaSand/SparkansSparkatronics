@@ -99,22 +99,34 @@ public class Auton extends LinearOpMode {
         BRMotor.setPower(RRP);
     }
 
-    public void iafcDrive {
+    public void fieldCentric() {
         double x = gamepad1.left_stick_x;
         double y = -gamepad1.left_stick_y;
         double rx = gamepad1.right_stick_x;
 
-        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        if (gamepad1.options) {
+            imu.resetYaw();
+        }
 
-        double rotX = (x*cos(heading)) + (y*sin(heading));
-        double rotY = (y*cos(heading)) + (x*sin(heading));
+        double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double rotX = (x*Math.cos(-heading)) - (y*Math.sin(-heading));
+        double rotY = (y*Math.cos(-heading)) + (x*Math.sin(-heading));
 
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-        double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
+        rotX = rotX * 1.1;
+
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
+
+        FLMotor.setPower(frontLeftPower);
+        FRMotor.setPower(frontRightPower);
+        BLMotor.setPower(backLeftPower);
+        BRMotor.setPower(backRightPower);
+
     }
 
 
