@@ -2,15 +2,18 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.linearOpMode;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-public class FieldCentric {
+public class FieldCentric extends LinearOpMode {
     private DcMotor FRMotor;
     private DcMotor FLMotor;
     private DcMotor BRMotor;
@@ -18,6 +21,7 @@ public class FieldCentric {
 
     IMU imu;
 
+    @Override
     public void runOpMode() {
 
         FLMotor = hardwareMap.get(DcMotor.class, "FLMotor");
@@ -33,14 +37,17 @@ public class FieldCentric {
         imu.initialize(
                 new IMU.Parameters(
                         new RevHubOrientationOnRobot(
-                                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
+                                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                                RevHubOrientationOnRobot.UsbFacingDirection.DOWN
                         )
                 )
         );
+
         imu.resetYaw();
-    }
-        public void fieldCentric() {
+
+        waitForStart();
+
+        while(opModeIsActive()) {
             double x = gamepad1.left_stick_x;
             double y = -gamepad1.left_stick_y;
             double rx = gamepad1.right_stick_x;
@@ -69,5 +76,5 @@ public class FieldCentric {
             BRMotor.setPower(backRightPower);
 
         }
-
+    }
 }

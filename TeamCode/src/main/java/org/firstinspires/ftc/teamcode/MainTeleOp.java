@@ -42,7 +42,6 @@ public class MainTeleOp extends LinearOpMode {
 
             // Clip power to ensure it stays within -1.0 to 1.0
             FLP = Range.clip(FLP, -1.0, 1.0);
-            FRP = Range.clip(FRP, -1.0, 1.0);
             RLP = Range.clip(RLP, -1.0, 1.0);
             RRP = Range.clip(RRP, -1.0, 1.0);
 
