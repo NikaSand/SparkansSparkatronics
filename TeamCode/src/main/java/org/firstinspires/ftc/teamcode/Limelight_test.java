@@ -48,6 +48,10 @@ public class Limelight_test extends OpMode {
 
         }
 
+    @Override
+    public void stop() {
+            limelight.stop();
+        }
     }
 
 }
