@@ -41,10 +41,14 @@ public class Jar_Limelight_test extends OpMode {
             telemetry.addData("BotPose",botpose.toString());
             telemetry.addData("Yaw", botpose.getOrientation().getYaw());
         }
+        else{
+            telemetry.addData("Limelight", "No Valid Target");
+        }
+        telemetry.update();
     }
     @Override
     public void stop(){
-        
+
     }
 
 }
