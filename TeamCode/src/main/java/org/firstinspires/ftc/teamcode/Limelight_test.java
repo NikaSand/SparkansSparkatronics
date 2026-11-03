@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode; //Put this
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+
+import java.util.List;
 
 
 //THIS CODE IS GOOD FOR DISTANCE
@@ -37,9 +40,10 @@ public class Limelight_test extends OpMode {
         //YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles(); **THESE ONLY FOR W/ IMU
         //limelight.updateRobotOrientation(orientation.getYaw());
         LLResult llResult = limelight.getLatestResult(); //this pulls data from the limelight
+
         if (llResult != null && llResult.isValid()) {
             Pose3D botPose = llResult.getBotpose();
-            int tagId = fr.getFiducialId(); // Extracts the AprilTag ID number
+            List<LLResultTypes.FiducialResult> tagId = llResult.getFiducialResults(); // Extracts the AprilTag ID number
             telemetry.addData("AprilTag ID", tagId);
             telemetry.addData("Tx", llResult.getTx());
             telemetry.addData("Ty", llResult.getTy());
@@ -47,7 +51,11 @@ public class Limelight_test extends OpMode {
             //telemetry.addData("Botpose", botpose.toString());
 
         }
-
+        telemetry.update();
     }
 
+    @Override
+    public void stop() {
+        limelight.stop();
+    }
 }
