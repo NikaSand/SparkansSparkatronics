@@ -2,20 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.util.Range.clip;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -69,6 +63,10 @@ public class Auton extends LinearOpMode {
             BLMotor.setPower(0);
 
         }
+        driveLesbian(30, 0, 1);
+        imuTurnToHeading(270, 5, 1);
+        driveLesbian(30, 270, 3);
+
 
     }
 
@@ -209,6 +207,8 @@ public class Auton extends LinearOpMode {
         setDrivePower(0, 0);
         sleep(100);
     }
+
+
 
 
 }
