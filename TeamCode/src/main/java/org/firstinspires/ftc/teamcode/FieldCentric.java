@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -18,6 +19,7 @@ public class FieldCentric extends LinearOpMode {
     private DcMotor FLMotor;
     private DcMotor BRMotor;
     private DcMotor BLMotor;
+    private Servo Turret;
 
     IMU imu;
 
@@ -28,11 +30,14 @@ public class FieldCentric extends LinearOpMode {
         FRMotor = hardwareMap.get(DcMotor.class, "FRMotor");
         BLMotor = hardwareMap.get(DcMotor.class, "BLMotor");
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor");
+        Turret = hardwareMap.get(Servo.class, "Turret");
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters myIMUparameters;
 
         FLMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         FRMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Turret.setPosition(0);
 
         imu.initialize(
                 new IMU.Parameters(
@@ -52,9 +57,20 @@ public class FieldCentric extends LinearOpMode {
             double y = -gamepad1.left_stick_y;
             double rx = gamepad1.right_stick_x;
 
+            double turretPos = 0;
+
             if (gamepad1.options) {
                 imu.resetYaw();
             }
+            if (gamepad2.right_bumper) {
+                turretPos+= 0.05092592592;
+                Turret.setPosition(turretPos);
+            }
+            if (gamepad2.left_bumper) {
+                turretPos-= 0.05092592592;
+                Turret.setPosition(turretPos);
+            }
+
 
             double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
