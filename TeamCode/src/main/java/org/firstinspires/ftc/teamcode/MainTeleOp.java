@@ -31,8 +31,8 @@ public class MainTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             // setting the power and the equations for cool wheel things
             double ForwardBack = -gamepad1.left_stick_y; //-
-            double Rotate = gamepad1.left_stick_x;
-            double LeftRight = -gamepad1.right_stick_x; //-
+            double Rotate = -gamepad1.left_stick_x;
+            double LeftRight = gamepad1.right_stick_x; //-
             double SpeedMultiplier = 1.0;
 
             double FLP = -(ForwardBack + LeftRight + Rotate) * SpeedMultiplier;
@@ -42,7 +42,6 @@ public class MainTeleOp extends LinearOpMode {
 
             // Clip power to ensure it stays within -1.0 to 1.0
             FLP = Range.clip(FLP, -1.0, 1.0);
-            FRP = Range.clip(FRP, -1.0, 1.0);
             RLP = Range.clip(RLP, -1.0, 1.0);
             RRP = Range.clip(RRP, -1.0, 1.0);
 
