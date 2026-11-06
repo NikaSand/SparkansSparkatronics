@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -18,6 +19,7 @@ public class MainTeleOp extends LinearOpMode {
     private DcMotor BRMotor;
     private DcMotor upIntake;
     private Servo Turret;
+    private CRServo Shooter;
 
     IMU imu;
 
@@ -30,6 +32,7 @@ public class MainTeleOp extends LinearOpMode {
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor"); //port3
         upIntake = hardwareMap.get(DcMotor.class, "upIntake");
         Turret = hardwareMap.get(Servo.class, "Turret");
+        Shooter = hardwareMap.get(Servo.class, "Shooter");
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters myIMUparameters;
 
@@ -70,6 +73,13 @@ public class MainTeleOp extends LinearOpMode {
             if (gamepad2.right_trigger_pressed) {
                 upIntake.setPower(100);
             }
+            float triggerPressure = gamepad2.left_trigger;
+            if (triggerPressure > 0.1) {
+                Shooter.setPower(1);
+            } else {
+                Shooter.setPower(0);
+            }
+
             // setting the power and the equations for cool wheel things
             double ForwardBack = -gamepad1.left_stick_y; //-
             double Rotate = -gamepad1.left_stick_x;
@@ -79,12 +89,14 @@ public class MainTeleOp extends LinearOpMode {
             double FLP = -(ForwardBack + LeftRight + Rotate) * SpeedMultiplier;
             double FRP = (ForwardBack - LeftRight - Rotate) * SpeedMultiplier;
             double RLP = -(ForwardBack - LeftRight + Rotate) * SpeedMultiplier;
-            double RRP = (ForwardBack + LeftRight - Rotate) * SpeedMultiplier;
+               double RRP = (ForwardBack + LeftRight - Rotate) * SpeedMultiplier;
 
             // Clip power to ensure it stays within -1.0 to 1.0
             FLP = Range.clip(FLP, -1.0, 1.0);
+            FRP = Range.clip(FRP, -1.0, 1.0);
             RLP = Range.clip(RLP, -1.0, 1.0);
             RRP = Range.clip(RRP, -1.0, 1.0);
+
 
             // Set motor power
             FLMotor.setPower(FLP);
