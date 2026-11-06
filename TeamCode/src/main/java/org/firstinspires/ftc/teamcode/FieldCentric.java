@@ -19,6 +19,7 @@ public class FieldCentric extends LinearOpMode {
     private DcMotor FLMotor;
     private DcMotor BRMotor;
     private DcMotor BLMotor;
+    private DcMotor upIntake;
     private Servo Turret;
 
     IMU imu;
@@ -30,6 +31,7 @@ public class FieldCentric extends LinearOpMode {
         FRMotor = hardwareMap.get(DcMotor.class, "FRMotor");
         BLMotor = hardwareMap.get(DcMotor.class, "BLMotor");
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor");
+        upIntake = hardwareMap.get(DcMotor.class, "upIntake");
         Turret = hardwareMap.get(Servo.class, "Turret");
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters myIMUparameters;
