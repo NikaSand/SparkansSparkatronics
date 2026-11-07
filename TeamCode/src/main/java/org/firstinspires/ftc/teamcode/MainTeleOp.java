@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -32,7 +33,7 @@ public class MainTeleOp extends LinearOpMode {
         BRMotor = hardwareMap.get(DcMotor.class, "BRMotor"); //port3
         upIntake = hardwareMap.get(DcMotor.class, "upIntake");
         Turret = hardwareMap.get(Servo.class, "Turret");
-        Shooter = hardwareMap.get(Servo.class, "Shooter");
+        Shooter = hardwareMap.get(CRServo.class, "Shooter");
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters myIMUparameters;
 
