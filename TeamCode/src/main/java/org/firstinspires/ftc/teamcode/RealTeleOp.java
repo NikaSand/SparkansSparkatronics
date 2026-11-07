@@ -142,13 +142,13 @@ public class RealTeleOp extends LinearOpMode {
             RRP = Range.clip(RRP, -1.0, 1.0);
 
 
-            // Set motor power             FIELD CENTRIC IF WE SO DESIRE
-            //FLMotor.setPower(FLP);
-            //FRMotor.setPower(FRP);
-            //BLMotor.setPower(RLP);
-            //BRMotor.setPower(RRP);
+            //Set motor power
+            FLMotor.setPower(FLP);
+            FRMotor.setPower(FRP);
+            BLMotor.setPower(RLP);
+            BRMotor.setPower(RRP);
 
-            //double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+            //double heading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS); FIELD CENTRIC IF WE SO DESIRE
 
             //double rotX = (x * Math.cos(-heading)) - (y * Math.sin(-heading));
             //double rotY = (y * Math.cos(-heading)) + (x * Math.sin(-heading));
